@@ -18,13 +18,13 @@ namespace libcron
         while (!done && --max_iterations > 0)
         {
             bool date_changed = false;
-            year_month_day ymd = date::floor<days>(curr);
+			date::year_month_day ymd = date::floor<date::days>(curr);
 
             // Add months until one of the allowed days are found, or stay at the current one.
             if (data.get_months().find(static_cast<Months>(unsigned(ymd.month()))) == data.get_months().end())
             {
                 auto next_month = ymd + months{1};
-                sys_days s = next_month.year() / next_month.month() / 1;
+                date::sys_days s = next_month.year() / next_month.month() / 1;
                 curr = s;
                 date_changed = true;
             }
@@ -35,23 +35,23 @@ namespace libcron
                 if (data.get_day_of_month().find(static_cast<DayOfMonth>(unsigned(ymd.day()))) ==
                     data.get_day_of_month().end())
                 {
-                    sys_days s = ymd;
+                    date::sys_days s = ymd;
                     curr = s;
-                    curr += days{1};
+                    curr += std::chrono::days{1};
                     date_changed = true;
                 }
             }
             else
             {
                 //Add days until the current weekday is one of the allowed weekdays
-                year_month_weekday ymw = date::floor<days>(curr);
+                date::year_month_weekday ymw = date::floor<date::days>(curr);
 
                 if (data.get_day_of_week().find(static_cast<DayOfWeek>(ymw.weekday().c_encoding())) ==
                     data.get_day_of_week().end())
                 {
-                    sys_days s = ymd;
+                    date::sys_days s = ymd;
                     curr = s;
-                    curr += days{1};
+                    curr += std::chrono::days{1};
                     date_changed = true;
                 }
             }
