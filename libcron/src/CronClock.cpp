@@ -1,6 +1,6 @@
 #include "libcron/CronClock.h"
 
-#ifdef WIN32
+#ifdef _WIN32
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
@@ -15,7 +15,7 @@ namespace libcron
 
 	std::chrono::seconds LocalClock::utc_offset(std::chrono::system_clock::time_point now) const
 	{
-#ifdef WIN32
+#ifdef _WIN32
 		(void)now;
 
 		TIME_ZONE_INFORMATION tz_info{};
